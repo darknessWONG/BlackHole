@@ -237,7 +237,7 @@ public class playerController : MonoBehaviour
                     psmm.gravityModifier = new ParticleSystem.MinMaxCurve(0);
                 }
 
-                Vector3 newPos = this.transform.position;
+                Vector3 newPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 Vector3 direct = Vector3.Normalize(transform.forward);
                 newPos += direct;
                 newPos.y += GetComponent<BoxCollider>().size.y / 2;
@@ -251,6 +251,8 @@ public class playerController : MonoBehaviour
                 it.expSpeed = MoveSpeed + 1;
                 it.expDistance = Vector3.Normalize(newV);
                 it.bulletStatus = item.BulletStatus.bullet;
+
+                go.transform.parent = null;
                 go.SetActive(true);
             }
         }

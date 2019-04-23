@@ -93,10 +93,10 @@ public class item : MonoBehaviour
     void OnTriggerEnter(Collider hit)
     {
         // 接触対象はPlayerタグですか？
-        if (hit.CompareTag("Player") && (int)hit.GetComponent<playerController>().status == 2)
+        if (hit.CompareTag("Player") && (int)hit.GetComponent<playerController>().status == 2
+            && bulletStatus == BulletStatus.item)
         {
             // 何らかの処理
-            //  Destroy(gameObject);
             if(hit.gameObject.GetComponent<playerController>().Prime(this.gameObject))
             {
                 this.gameObject.SetActive(false);
