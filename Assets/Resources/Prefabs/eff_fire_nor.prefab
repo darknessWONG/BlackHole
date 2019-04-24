@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4040873323397109700}
   - component: {fileID: 6247271740925363932}
   - component: {fileID: 293845602743377854}
+  - component: {fileID: 3877187305571114477}
   m_Layer: 0
   m_Name: eff_fire_nor
   m_TagString: Item
@@ -30,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6593900455933958151}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4751,10 +4752,10 @@ BoxCollider:
   m_GameObject: {fileID: 6593900455933958151}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 5.19055, y: 1.4370829, z: 1.4371715}
-  m_Center: {x: 1.8870072, y: -0.0011050105, z: 0.0008343756}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 1.8870072, y: -0.3, z: 0.1}
 --- !u!54 &293845602743377854
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4771,3 +4772,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
+--- !u!135 &3877187305571114477
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6593900455933958151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Center: {x: 0, y: 0, z: 0}

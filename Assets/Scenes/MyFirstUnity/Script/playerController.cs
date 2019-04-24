@@ -241,12 +241,13 @@ public class playerController : MonoBehaviour
                 Vector3 direct = Vector3.Normalize(transform.forward);
                 newPos += direct;
                 newPos.y += GetComponent<BoxCollider>().size.y / 2;
-                Vector3 newV = Vector3.Normalize(transform.forward) * MoveSpeed;
+                Vector3 newV = Vector3.Normalize(transform.forward) * MoveSpeed * 50;
                 newV.z = 0;
                 newV.y = 0;
                 go.GetComponent<Transform>().position = newPos;
                 go.GetComponent<Rigidbody>().velocity = newV;
                 go.GetComponent<Rigidbody>().useGravity = false;
+                //go.GetComponent<BoxCollider>().enabled = false;
                 item it = go.GetComponent<item>();
                 it.expSpeed = MoveSpeed + 1;
                 it.expDistance = Vector3.Normalize(newV);
