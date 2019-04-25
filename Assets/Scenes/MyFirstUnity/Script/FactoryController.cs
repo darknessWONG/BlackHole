@@ -66,7 +66,6 @@ public class FactoryController : MonoBehaviour
             go.transform.SetParent(transform);
             go.transform.position = transform.position;
 
-
             item it = go.GetComponent<item>();
             it.target = GameObject.FindGameObjectWithTag("Player") .transform;
             it.mytransform = go.transform;
