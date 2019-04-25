@@ -83,7 +83,6 @@ public class item : MonoBehaviour
         else
         {
             GetComponent<Rigidbody>().AddForce(expDistance.x * expSpeed, 0, 0);
-            Debug.Log(expDistance.ToString());
         }
 
     }
@@ -93,7 +92,7 @@ public class item : MonoBehaviour
     void OnTriggerEnter(Collider hit)
     {
         // 接触対象はPlayerタグですか？
-        if (hit.CompareTag("Player") && (int)hit.GetComponent<playerController>().status == 2
+        if (hit.CompareTag("Player") && hit.GetComponent<playerController>().status == playerController.E_BlackHoleStatus.E_BlackHoleOn
             && bulletStatus == BulletStatus.item)
         {
             // 何らかの処理

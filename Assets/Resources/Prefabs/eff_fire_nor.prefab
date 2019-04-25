@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6247271740925363932}
   - component: {fileID: 293845602743377854}
   - component: {fileID: 3877187305571114477}
+  - component: {fileID: 6379067509521009035}
   m_Layer: 0
   m_Name: eff_fire_nor
   m_TagString: Item
@@ -4785,3 +4786,16 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6379067509521009035
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6593900455933958151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 5.0205035, y: 1.4381338, z: 1.4382735}
+  m_Center: {x: 1.8023536, y: -0.000035583973, z: 0.00044447184}
