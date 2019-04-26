@@ -15,12 +15,23 @@ public class BulletCounterController : MonoBehaviour
     {
         bulletList = GameObject.FindGameObjectsWithTag("BulletCounter");
         bulletSelector = GameObject.FindGameObjectWithTag("BulletSelector");
+
+        playerController pc = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
+        for (int i = 0; i < pc.bulletMax; i++)
+        {
+            bulletList[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-30f * i, 0f, 0f);
+        }
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         playerController pc = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
+        for (int i = 0; i < pc.bulletMax; i++)
+        {
+            bulletList[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-30f * i, 0f, 0f);
+        }
+
 
         for(int i = 0; i < pc.bulletMax; i++)
         {
