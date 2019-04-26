@@ -113,7 +113,7 @@ public class playerController : MonoBehaviour
             //        status = E_BlackHoleStatus.E_BlackHoleOff;
             //        break;
             //}
-            status = E_BlackHoleStatus.E_BlackHoleOn;
+            BlockHoleController(true);
 
         }
         if (Input.GetKeyUp(KeyCode.Space))
@@ -130,7 +130,7 @@ public class playerController : MonoBehaviour
             //        status = E_BlackHoleStatus.E_BlackHoleOff;
             //        break;
             //}
-            status = E_BlackHoleStatus.E_BlackHoleOff;
+            BlockHoleController(false);
 
         }
 
@@ -159,7 +159,7 @@ public class playerController : MonoBehaviour
 
     public bool CanPrime()
     {
-        if (GetBulletCount() > 10)
+        if (GetBulletCount() >= bulletMax)
         {
             return false;
         }
@@ -171,7 +171,7 @@ public class playerController : MonoBehaviour
 
     public bool Prime(GameObject go)
     {
-        if (GetBulletCount() > 10)
+        if (GetBulletCount() >= bulletMax)
         {
             return false;
         }
@@ -223,6 +223,26 @@ public class playerController : MonoBehaviour
         return -1;
     }
 
+    /// <summary>
+    /// find the frist unavlivable index
+    /// </summary>
+    /// <param name="head">search start from this index</param>
+    /// <returns>the index of the frist unablivable list, will return -1 went the list is emety</returns>
+    public int GetFristUnavlivableIndex(int head)
+    {
+        int i = head;
+        i = (i + 1) % bulletMax;
+        while (i != head)
+        {
+            if (checkBullet(i))
+            {
+                return i;
+            }
+            i = (i + 1) % bulletMax;
+        }
+        return -1;
+    }
+
     private void Shot()
     {
         if (GetBulletCount() > 0)
@@ -231,30 +251,50 @@ public class playerController : MonoBehaviour
             {
                 GameObject go = bulletList[nowSelectBullet];
                 bulletList[nowSelectBullet] = null;
-                if (go.GetComponent<item>().type == item.BulletType.fire)
-                {
-                    var psmm = go.GetComponent<ParticleSystem>().main;
-                    psmm.gravityModifier = new ParticleSystem.MinMaxCurve(0);
-                }
+                SetBulletToShot(go);
 
-                Vector3 newPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-                Vector3 direct = Vector3.Normalize(transform.forward);
-                newPos += direct;
-                newPos.y += GetComponent<BoxCollider>().size.y / 2;
-                Vector3 newV = Vector3.Normalize(transform.forward) * MoveSpeed;
-                newV.z = 0;
-                newV.y = 0;
-                go.GetComponent<Transform>().position = newPos;
-                go.GetComponent<Rigidbody>().velocity = newV;
-                go.GetComponent<Rigidbody>().useGravity = false;
-                item it = go.GetComponent<item>();
-                it.expSpeed = MoveSpeed + 1;
-                it.expDistance = Vector3.Normalize(newV);
-                it.bulletStatus = item.BulletStatus.bullet;
-
-                go.transform.parent = null;
-                go.SetActive(true);
+                int index = GetFristUnavlivableIndex(nowSelectBullet);
+                nowSelectBullet = index == - 1 ? 0 : index;
             }
+        }
+    }
+
+    private void SetBulletToShot(GameObject go)
+    {
+        if (go.GetComponent<item>().type == item.BulletType.fire)
+        {
+            var psmm = go.GetComponent<ParticleSystem>().main;
+            psmm.gravityModifier = new ParticleSystem.MinMaxCurve(0);
+        }
+
+        Vector3 newPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 direct = Vector3.Normalize(transform.forward);
+        newPos += direct;
+        newPos.y += GetComponent<BoxCollider>().size.y / 2;
+        Vector3 newV = Vector3.Normalize(transform.forward) * MoveSpeed * 50;
+        newV.z = 0;
+        newV.y = 0;
+        go.GetComponent<Transform>().position = newPos;
+        go.GetComponent<Rigidbody>().velocity = newV;
+        go.GetComponent<Rigidbody>().useGravity = false;
+        item it = go.GetComponent<item>();
+        it.expSpeed = MoveSpeed + 1;
+        it.expDistance = Vector3.Normalize(newV);
+        it.bulletStatus = item.BulletStatus.bullet;
+
+        go.transform.parent = null;
+        go.SetActive(true);
+    }
+
+    private void BlockHoleController(bool switchs)
+    {
+        if (switchs && CanPrime())
+        {
+            status = E_BlackHoleStatus.E_BlackHoleOn;
+        }
+        else
+        {
+            status = E_BlackHoleStatus.E_BlackHoleOff;
         }
     }
 }

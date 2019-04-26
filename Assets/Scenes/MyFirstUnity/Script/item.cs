@@ -67,7 +67,11 @@ public class item : MonoBehaviour
             if (status == 2 && pc.CanPrime())    // ブラックホールOnの時処理
             {
                 // 距離計算
-                float disTemp = Vector3.Distance(transform.position, target.position);
+                //float disTemp = Vector3.Distance(transform.position, target.position);
+                Vector3 targetPos = target.position;
+                targetPos.y += target.GetComponent<BoxCollider>().size.y / 2;
+                float disTemp = Vector3.Distance(transform.position,  targetPos);
+
 
                 // チェック範囲内に入ると
                 if (disTemp < distance)
@@ -75,7 +79,7 @@ public class item : MonoBehaviour
                     /*===============   追跡の処理   ===============*/
                     Debug.DrawLine(target.transform.position, this.transform.position, Color.yellow);
                     mytransform.rotation = Quaternion.Slerp(mytransform.rotation,
-                        Quaternion.LookRotation(target.position - mytransform.position), rotateSpeed * Time.deltaTime);
+                        Quaternion.LookRotation(targetPos - mytransform.position), rotateSpeed * Time.deltaTime);
                     mytransform.position += mytransform.forward * moveSpeed * Time.deltaTime;
                 }
             }
@@ -83,7 +87,6 @@ public class item : MonoBehaviour
         else
         {
             GetComponent<Rigidbody>().AddForce(expDistance.x * expSpeed, 0, 0);
-            Debug.Log(expDistance.ToString());
         }
 
     }
@@ -93,7 +96,8 @@ public class item : MonoBehaviour
     void OnTriggerEnter(Collider hit)
     {
         // 接触対象はPlayerタグですか？
-        if (hit.CompareTag("Player") && (int)hit.GetComponent<playerController>().status == 2
+        if (hit.CompareTag("Player") 
+            && hit.GetComponent<playerController>().status == playerController.E_BlackHoleStatus.E_BlackHoleOn
             && bulletStatus == BulletStatus.item)
         {
             // 何らかの処理
