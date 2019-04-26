@@ -45,6 +45,7 @@ public class playerController : MonoBehaviour
 
         //bulletList = new List<GameObject>();
         bulletList = new GameObject[bulletMax];
+        for (int i = 0; i < bulletMax; i++) bulletList[i] = null;
         nowSelectBullet = 0;
 
         isDie = false;
@@ -179,7 +180,9 @@ public class playerController : MonoBehaviour
         {
             if (!go.CompareTag("Enemy"))
             {
+                //Debug.Log(getFristAvlivableIndex().ToString());
                 bulletList[getFristAvlivableIndex()] = go;
+
 
             }
             return true;
@@ -215,6 +218,7 @@ public class playerController : MonoBehaviour
     {
         for (int i = 0; i < bulletMax; i++)
         {
+            //Debug.Log(i.ToString());
             if (!checkBullet(i))
             {
                 return i;
