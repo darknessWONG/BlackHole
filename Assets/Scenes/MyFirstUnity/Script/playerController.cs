@@ -15,6 +15,14 @@ public class playerController : MonoBehaviour
         E_BlackHoleOn,
         E_Max,
     }
+    // ブラックホール状態Enum
+    public enum E_JumpStatus
+    {
+        E_normal,
+        E_raise,
+        E_fall,
+        E_Max
+    }
     // ブラックホール状態変数
     public E_BlackHoleStatus status
     {
@@ -26,17 +34,22 @@ public class playerController : MonoBehaviour
     [Header("弾丸の最大数")]
     public int bulletMax;
 
-    public int nowSelectBullet { get; set; }
-
-    public bool isDie { get; set; }
-
     [SerializeField]
     [Header("プレイヤーの移動速度")]
     private float MoveSpeed = 0.1f;
 
+    [SerializeField]
+    [Header("ジャンプの高さ")]
+    private float jumpSpeed = 200;
+
+    public int nowSelectBullet { get; set; }
+    public bool isDie { get; set; }
+    public E_JumpStatus js { get; set; }
+
     //private List<GameObject> bulletList;
     private GameObject[] bulletList;
 
+    private const float margin = 0.1f;
 
     void Start()
     {
@@ -49,6 +62,8 @@ public class playerController : MonoBehaviour
         nowSelectBullet = 0;
 
         isDie = false;
+
+        GetComponent<Rigidbody>().freezeRotation = true;
     }
 
     void Update()
@@ -82,11 +97,18 @@ public class playerController : MonoBehaviour
                 transform.Translate(0, 0, MoveSpeed);
                 this.transform.forward = Vector3.Lerp(transform.forward, Vector3.left, 1);
             }
+
             if (Input.GetKey(KeyCode.D))
             {
 
                 transform.Translate(0, 0, MoveSpeed);
                 this.transform.forward = Vector3.Lerp(transform.forward, Vector3.right, 1);
+            }
+
+            if(Input.GetKey(KeyCode.H) && E_JumpStatus.E_normal == js)
+            {
+                js = E_JumpStatus.E_raise;
+                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
             }
         }
         else
@@ -102,37 +124,11 @@ public class playerController : MonoBehaviour
         // spaceキーでブラックホール開始
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //switch (status)
-            //{
-            //    case E_BlackHoleStatus.E_BlackHoleOn:
-            //        status = E_BlackHoleStatus.E_BlackHoleOff;
-            //        break;
-            //    case E_BlackHoleStatus.E_BlackHoleOff:
-            //        status = E_BlackHoleStatus.E_BlackHoleOn;
-            //        break;
-            //    default:
-            //        status = E_BlackHoleStatus.E_BlackHoleOff;
-            //        break;
-            //}
-            BlockHoleController(true);
-
+            BlackHoleController(true);
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            //switch (status)
-            //{
-            //    case E_BlackHoleStatus.E_BlackHoleOn:
-            //        status = E_BlackHoleStatus.E_BlackHoleOff;
-            //        break;
-            //    case E_BlackHoleStatus.E_BlackHoleOff:
-            //        status = E_BlackHoleStatus.E_BlackHoleOn;
-            //        break;
-            //    default:
-            //        status = E_BlackHoleStatus.E_BlackHoleOff;
-            //        break;
-            //}
-            BlockHoleController(false);
-
+            BlackHoleController(false);
         }
 
         if (Input.GetKeyDown(KeyCode.B))
@@ -155,7 +151,8 @@ public class playerController : MonoBehaviour
             Instantiate(newGo);
             newGo.transform.position = new Vector3(0, 1.5f, 0);
         }
- 
+
+        JumpStatusUpdate();
     }
 
     public bool CanPrime()
@@ -290,7 +287,7 @@ public class playerController : MonoBehaviour
         go.SetActive(true);
     }
 
-    private void BlockHoleController(bool switchs)
+    private void BlackHoleController(bool switchs)
     {
         if (switchs && CanPrime())
         {
@@ -300,5 +297,18 @@ public class playerController : MonoBehaviour
         {
             status = E_BlackHoleStatus.E_BlackHoleOff;
         }
+    }
+
+    private void JumpStatusUpdate()
+    {
+        if (IsOnGround() && E_JumpStatus.E_normal != js)
+        {
+            js = E_JumpStatus.E_normal;
+        }
+    }
+
+    private bool IsOnGround()
+    {
+        return Physics.Raycast(transform.position + Vector3.up * margin, -Vector3.up, margin * 2, 1 << LayerMask.NameToLayer("ground"));
     }
 }
