@@ -116,25 +116,11 @@ public class motionChanger : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.H) && playerController.E_JumpStatus.E_normal == pc.js)
+            if (Input.GetButton("Jump") && playerController.E_JumpStatus.E_normal == pc.js)
             {
 
                 ChangerAnimation(E_MotionType.toJump);
             }
-
-
-            // モーション変更
-            if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-                && playerController.E_JumpStatus.E_normal == pc.js)
-            {
-                ChangerAnimation(E_MotionType.toMove);
-            }
-            else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-                && playerController.E_JumpStatus.E_normal == pc.js)
-            {
-                ChangerAnimation(E_MotionType.toMove);
-            }
-
 
             /*===== コントローラー =====*/
             if (Input.GetAxis("Horizontal") < -0.1f)
@@ -146,7 +132,7 @@ public class motionChanger : MonoBehaviour
                 ChangerAnimation(E_MotionType.toMove);
             }
 
-            if (Input.GetKey(KeyCode.Joystick1Button1) && playerController.E_JumpStatus.E_normal == pc.js)
+            if (Input.GetButton("Jump") && playerController.E_JumpStatus.E_normal == pc.js)
             {
                 ChangerAnimation(E_MotionType.toJump);
             }

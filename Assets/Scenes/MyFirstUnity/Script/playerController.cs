@@ -93,27 +93,6 @@ public class playerController : MonoBehaviour
         motionChanger mc = GameObject.FindGameObjectWithTag("Player").GetComponent<motionChanger>();
         if (mc.IsMoveAnimation())
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                //this.transform.Translate(Vector3.left * MoveSpeed);
-                transform.Translate(0, 0, MoveSpeed);
-                this.transform.forward = Vector3.Lerp(transform.forward, Vector3.left, 1);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-
-                transform.Translate(0, 0, MoveSpeed);
-                this.transform.forward = Vector3.Lerp(transform.forward, Vector3.right, 1);
-            }
-
-            if(Input.GetKey(KeyCode.H) && E_JumpStatus.E_normal == js)
-            {
-                js = E_JumpStatus.E_raise;
-                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
-            }
-
-
             /*===== コントローラー =====*/
             if (Input.GetAxis("Horizontal") < -0.1f)
             {
@@ -126,7 +105,7 @@ public class playerController : MonoBehaviour
                 this.transform.forward = Vector3.Lerp(transform.forward, Vector3.right, 1);
             }
 
-            if(Input.GetKey(KeyCode.Joystick1Button1) && E_JumpStatus.E_normal == js)
+            if(Input.GetButton("Jump") && E_JumpStatus.E_normal == js)
             {
                 js = E_JumpStatus.E_raise;
                 GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
@@ -142,55 +121,34 @@ public class playerController : MonoBehaviour
             }
         }
 
-        // spaceキーでブラックホール開始
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            BlackHoleController(true);
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            BlackHoleController(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Shot();
-        }
-
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            nowSelectBullet = (nowSelectBullet + 1) % bulletMax;
-        }
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            nowSelectBullet = (nowSelectBullet - 1) >= 0 ? nowSelectBullet - 1 : bulletMax - 1;
-        }
-
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-            GameObject newGo = Resources.Load("Prefabs/eff_fire_ball") as GameObject;
-            Instantiate(newGo);
-            newGo.transform.position = new Vector3(0, 1.5f, 0);
-        }
+        //if(Input.GetKeyDown(KeyCode.J))
+        //{
+        //    GameObject newGo = Resources.Load("Prefabs/eff_fire_ball") as GameObject;
+        //    Instantiate(newGo);
+        //    newGo.transform.position = new Vector3(0, 1.5f, 0);
+        //}
 
         /*===== コントローラー =====*/
-        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.GetButtonDown("Bh"))
         {
             BlackHoleController(true);
+            //Debug.Log("bh true");
         }
-        if (Input.GetKeyUp(KeyCode.Joystick1Button0))
+        else if (Input.GetButtonUp("Bh"))
         {
             BlackHoleController(false);
+            //Debug.Log("bh false");
         }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button2))
+        if (Input.GetButtonUp("Shot"))
         {
             Shot();
+            //Debug.Log("show sb");
         }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+        if (Input.GetButtonUp("bulletToLeft"))
         {
             nowSelectBullet = (nowSelectBullet + 1) % bulletMax;
         }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button5))
+        if (Input.GetButtonUp("bulletToRight"))
         {
             nowSelectBullet = (nowSelectBullet - 1) >= 0 ? nowSelectBullet - 1 : bulletMax - 1;
         }
