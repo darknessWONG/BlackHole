@@ -73,6 +73,8 @@ public class playerController : MonoBehaviour
         temp.z = 0;
         //temp.y = 1.5f;
         transform.localPosition = temp;
+
+        JumpStatusUpdate();
     }
 
     // 入力するたびに更新する
@@ -106,6 +108,25 @@ public class playerController : MonoBehaviour
             }
 
             if(Input.GetKey(KeyCode.H) && E_JumpStatus.E_normal == js)
+            {
+                js = E_JumpStatus.E_raise;
+                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
+            }
+
+
+            /*===== コントローラー =====*/
+            if (Input.GetAxis("Horizontal") < -0.1f)
+            {
+                transform.Translate(0, 0, MoveSpeed);
+                this.transform.forward = Vector3.Lerp(transform.forward, Vector3.left, 1);
+            }
+            else if (Input.GetAxis("Horizontal") > 0.1f)
+            {
+                transform.Translate(0, 0, MoveSpeed);
+                this.transform.forward = Vector3.Lerp(transform.forward, Vector3.right, 1);
+            }
+
+            if(Input.GetKey(KeyCode.Joystick1Button1) && E_JumpStatus.E_normal == js)
             {
                 js = E_JumpStatus.E_raise;
                 GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
@@ -152,7 +173,27 @@ public class playerController : MonoBehaviour
             newGo.transform.position = new Vector3(0, 1.5f, 0);
         }
 
-        JumpStatusUpdate();
+        /*===== コントローラー =====*/
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            BlackHoleController(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Joystick1Button0))
+        {
+            BlackHoleController(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button2))
+        {
+            Shot();
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+        {
+            nowSelectBullet = (nowSelectBullet + 1) % bulletMax;
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button5))
+        {
+            nowSelectBullet = (nowSelectBullet - 1) >= 0 ? nowSelectBullet - 1 : bulletMax - 1;
+        }
     }
 
     public bool CanPrime()

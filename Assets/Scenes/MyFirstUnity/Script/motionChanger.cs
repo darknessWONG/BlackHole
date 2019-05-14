@@ -25,6 +25,7 @@ public class motionChanger : MonoBehaviour
         toIdle,
         toMove,
         toGree,
+        toJump,
         max,
     }
 
@@ -37,7 +38,7 @@ public class motionChanger : MonoBehaviour
         m_PrevState = m_Animator.GetCurrentAnimatorStateInfo(0);
 
         // index
-        for (int i = 0; i < m_AnimationMax; ++i)
+        for (int i = 0; i < m_AnimationMax; i++)
         {
             if (m_PrevState.IsName(AnimationClips[i].name))
             {
@@ -58,19 +59,54 @@ public class motionChanger : MonoBehaviour
             //Debug.Log(m_ChangingMotion.ToString());
         }
 
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+
+
+        // 走るから待機に戻る
+        //if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        //{
+        //    ChangerAnimation(E_MotionType.toIdle);
+        //}
+        /*===== コントローラー =====*/
+        if (Input.GetAxis("Horizontal") > -0.1f && Input.GetAxis("Horizontal") < 0.1f)
         {
             ChangerAnimation(E_MotionType.toIdle);
         }
 
-        if ((animState.normalizedTime >= 0.5f) && (animState.IsName("mid_acq_twn_gree")))
+        playerController pc = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
+        // ジャンプ中　アニメーション終わったら
+        if (playerController.E_JumpStatus.E_raise == pc.js
+            && animState.IsName("mid_acq_twn_jump"))
         {
-            ChangerAnimation(E_MotionType.toIdle);
+            // 走るに戻る
+            //if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            //{
+            //    m_Animator.SetBool("Jump", false);
+            //    ChangerAnimation(E_MotionType.toMove);
+            //}
+            //// 待機に戻る
+            //else
+            //{
+            //    ChangerAnimation(E_MotionType.toIdle);
+            //}
+
+
+            /*===== コントローラー =====*/
+            if (Input.GetAxis("Horizontal") < -0.1f || Input.GetAxis("Horizontal") > 0.1f)
+            {
+                m_Animator.SetBool("Jump", false);
+                ChangerAnimation(E_MotionType.toMove);
+            }
+            else
+            {
+                ChangerAnimation(E_MotionType.toIdle);
+            }
+
         }
     }
 
     private void FixedUpdate()
     {
+        playerController pc = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
         // モーション遷移中
         AnimatorStateInfo animState = m_Animator.GetCurrentAnimatorStateInfo(0);
         if (animState.fullPathHash != m_PrevState.fullPathHash)
@@ -80,21 +116,41 @@ public class motionChanger : MonoBehaviour
         }
         else
         {
+            if (Input.GetKey(KeyCode.H) && playerController.E_JumpStatus.E_normal == pc.js)
+            {
+
+                ChangerAnimation(E_MotionType.toJump);
+            }
+
+
             // モーション変更
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                && playerController.E_JumpStatus.E_normal == pc.js)
             {
                 ChangerAnimation(E_MotionType.toMove);
             }
-            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                && playerController.E_JumpStatus.E_normal == pc.js)
             {
                 ChangerAnimation(E_MotionType.toMove);
             }
-        }
 
 
-        if (Input.GetKeyDown(KeyCode.Z) && !animState.IsName("mid_acq_twn_run"))
-        {
-            ChangerAnimation(E_MotionType.toGree);
+            /*===== コントローラー =====*/
+            if (Input.GetAxis("Horizontal") < -0.1f)
+            {
+                ChangerAnimation(E_MotionType.toMove);
+            }
+            else if (Input.GetAxis("Horizontal") > 0.1f)
+            {
+                ChangerAnimation(E_MotionType.toMove);
+            }
+
+            if (Input.GetKey(KeyCode.Joystick1Button1) && playerController.E_JumpStatus.E_normal == pc.js)
+            {
+                ChangerAnimation(E_MotionType.toJump);
+            }
+
         }
     }
 
@@ -106,6 +162,14 @@ public class motionChanger : MonoBehaviour
     {
         AnimatorStateInfo animState = m_Animator.GetCurrentAnimatorStateInfo(0);
         if (animState.IsName("mid_acq_twn_run"))
+        {
+            return true;
+        }
+        else if (animState.IsName("mid_acq_twn_jump"))
+        {
+            return true;
+        }
+        else if (animState.IsName("mid_acq_twn_idl"))
         {
             return true;
         }
@@ -126,6 +190,7 @@ public class motionChanger : MonoBehaviour
         {
             case E_MotionType.toIdle:
                 m_PrevState = m_Animator.GetCurrentAnimatorStateInfo(0);
+                m_Animator.SetBool("Jump", false);
                 m_Animator.SetBool("Gree", false);
                 m_Animator.SetBool("Move", false);
                 break;
@@ -133,10 +198,15 @@ public class motionChanger : MonoBehaviour
                 m_PrevState = m_Animator.GetCurrentAnimatorStateInfo(0);
                 m_Animator.SetBool("Move", true);
                 break;
-            case E_MotionType.toGree:
+            //case E_MotionType.toGree:
+            //    m_PrevState = m_Animator.GetCurrentAnimatorStateInfo(0);
+            //    m_Animator.SetBool("Move", false);
+            //    m_Animator.SetBool("Gree", true);
+            //    break;
+            case E_MotionType.toJump:
                 m_PrevState = m_Animator.GetCurrentAnimatorStateInfo(0);
                 m_Animator.SetBool("Move", false);
-                m_Animator.SetBool("Gree", true);
+                m_Animator.SetBool("Jump", true);
                 break;
         }
 
