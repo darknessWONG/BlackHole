@@ -210,6 +210,18 @@ public class playerController : MonoBehaviour
         }
     }
 
+    public item.BulletType GetBulletType(int index)
+    {
+        if(null == bulletList[index])
+        {
+            return item.BulletType.bullet3;
+        }
+        else
+        {
+            return bulletList[index].GetComponent<item>().type;
+        }
+    }
+
     public int getFristAvlivableIndex()
     {
         for (int i = 0; i < bulletMax; i++)

@@ -7,6 +7,7 @@ public class BulletCounterController : MonoBehaviour
 {
     public Sprite a;
     public Sprite b;
+    public Sprite c;
 
     private GameObject[] bulletList;
     private GameObject bulletSelector;
@@ -37,11 +38,24 @@ public class BulletCounterController : MonoBehaviour
         {
             if(pc.checkBullet(i))
             {
-                bulletList[i].GetComponent<Image>().sprite = a;
+                Debug.Log(pc.GetBulletType(i).ToString());
+                switch (pc.GetBulletType(i))
+                {
+                    case item.BulletType.fire:
+                        bulletList[i].GetComponent<Image>().sprite = b;
+                        break;
+                    case item.BulletType.normal:
+                        bulletList[i].GetComponent<Image>().sprite = c;
+                        break;
+                    //default:
+                    //    bulletList[i].GetComponent<Image>().sprite = a;
+                    //    break;
+                }
+
             }
             else
             {
-                bulletList[i].GetComponent<Image>().sprite = b;
+                bulletList[i].GetComponent<Image>().sprite = a;
             }
         }
 
