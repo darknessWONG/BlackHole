@@ -9,10 +9,9 @@ public class scoreController : MonoBehaviour
     private int score;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        GameObject go = GetComponent<gameController>().gameObject;
-        //score = go.Score;
+       score = GameObject.Find("GameController").GetComponent<gameController>().Score;
     }
 
     // Update is called once per frame
