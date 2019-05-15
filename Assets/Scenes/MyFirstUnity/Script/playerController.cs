@@ -108,7 +108,7 @@ public class playerController : MonoBehaviour
             if(Input.GetButton("Jump") && E_JumpStatus.E_normal == js)
             {
                 js = E_JumpStatus.E_raise;
-                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed);
+                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed * 3.0f);
             }
         }
         else

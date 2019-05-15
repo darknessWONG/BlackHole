@@ -16,7 +16,7 @@ public class InteractionObjectController : MonoBehaviour
                 newGo = Instantiate(newGo);
 
                 Vector3 newPos = this.transform.position;
-                newPos.y = 2f;
+                //newPos.y = 2f;
                 newGo.transform.position = newPos;
                 newGo.GetComponent<bombController>().liveFrame = 50f;
 
