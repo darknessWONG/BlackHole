@@ -40,10 +40,9 @@ public class enterKeyController : MonoBehaviour
                 break;
         }
 
-        if(GameObject.FindGameObjectWithTag("Player").transform.position.x >= 156)
+        if (GameObject.FindGameObjectWithTag("Player").transform.position.x >= 156)
         {
             FadeManager.FadeOut("Result", 1.5f);
         }
-
     }
 }

@@ -28,8 +28,6 @@ public class stageIniter : MonoBehaviour
                     newPos.y = positions[i].y;
                     newPos.z = positions[i].z;
                     go.transform.position = newPos;
-
-                    Debug.Log(newPos.ToString());
                 }
 
             }
