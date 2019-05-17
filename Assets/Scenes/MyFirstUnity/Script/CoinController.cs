@@ -18,8 +18,11 @@ public class CoinController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var gc = GameObject.Find("GameController");
-        gc.GetComponent<gameController>().Score++;
-        GameObject.Destroy(this.gameObject);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            var gc = GameObject.Find("GameController");
+            gc.GetComponent<gameController>().Score++;
+            GameObject.Destroy(this.gameObject);
+        }
     }
 }

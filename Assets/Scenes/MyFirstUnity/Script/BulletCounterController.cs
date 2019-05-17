@@ -38,7 +38,6 @@ public class BulletCounterController : MonoBehaviour
         {
             if(pc.checkBullet(i))
             {
-                Debug.Log(pc.GetBulletType(i).ToString());
                 switch (pc.GetBulletType(i))
                 {
                     case item.BulletType.fire:
@@ -47,9 +46,9 @@ public class BulletCounterController : MonoBehaviour
                     case item.BulletType.normal:
                         bulletList[i].GetComponent<Image>().sprite = c;
                         break;
-                    //default:
-                    //    bulletList[i].GetComponent<Image>().sprite = a;
-                    //    break;
+                    default:
+                        bulletList[i].GetComponent<Image>().sprite = a;
+                        break;
                 }
 
             }

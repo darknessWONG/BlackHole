@@ -12,6 +12,10 @@ public class FactoryController : MonoBehaviour
     [Header("更新間隔")]
     private int refreshFream;
 
+    [SerializeField]
+    [Header("更新間隔")]
+    private int refreashDistance;
+
     private bool hasFreeChild;
     private int hasNoChildCount;
 
@@ -40,7 +44,12 @@ public class FactoryController : MonoBehaviour
         }
         else
         {
-            hasNoChildCount++;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            float dis = Vector3.Distance(transform.position, player.transform.position);
+            if (dis >= refreashDistance)
+            {
+                hasNoChildCount++;
+            }
         }
 
 
