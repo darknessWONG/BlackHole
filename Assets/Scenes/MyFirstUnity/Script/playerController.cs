@@ -108,7 +108,7 @@ public class playerController : MonoBehaviour
             if(Input.GetButton("Jump") && E_JumpStatus.E_normal == js)
             {
                 js = E_JumpStatus.E_raise;
-                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed * 3.0f);
+                GetComponent<Rigidbody>().AddForce(Vector3.up * jumpSpeed * 2.5f);
             }
         }
         else
@@ -120,13 +120,6 @@ public class playerController : MonoBehaviour
                 this.transform.forward = Vector3.Lerp(transform.forward, Vector3.back, 1);
             }
         }
-
-        //if(Input.GetKeyDown(KeyCode.J))
-        //{
-        //    GameObject newGo = Resources.Load("Prefabs/eff_fire_ball") as GameObject;
-        //    Instantiate(newGo);
-        //    newGo.transform.position = new Vector3(0, 1.5f, 0);
-        //}
 
         /*===== コントローラー =====*/
         if (Input.GetButtonDown("Bh"))
